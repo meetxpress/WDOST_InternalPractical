@@ -1,3 +1,19 @@
+<?php
+    include("config.php");
+    session_start();
+    if(isset($_POST['btnLogin'])){
+        $result = mysqli_query($con, "SELECT * FROM user_master WHERE uname = '".$_POST['uName']."' and pwd = md5('".$_POST['uPass']."')");
+        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);                                    
+        $count = mysqli_num_rows($result);                              
+        if($count == 1) {            
+            $_SESSION['uname'] = $_POST['uName'];
+            header("location: dashboard.php");                       
+        } else {                
+            echo "<script>alert('Your Login Name or Password is invalid. Please try again')</script>";
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,48 +26,27 @@
 
 <body>
     <div class="container" style="border: 3px solid black; max-width: max-content; padding: 20px; padding-top: 0">
-        <h2>Insert Product</h2>
+        <h2>Login here for any further Operation</h2>
         <form action="#" method="post">
             <table>
                 <tr>
-                    <td>Product Name</td>
+                    <td>Usernmae</td>
                     <td>
-                        <input input="text" name="proName" placeholder="Product Name">
+                        <input type="text" name="uName" placeholder="Username" require>
                     </td>
                 </tr>
 
                 <tr>
-                    <td>Product Unit Id</td>
+                    <td>Password</td>
                     <td>
-                        <select style="width: 178px;" name="proUnitId">
-                            <option selected disabled>---Select Unit---</option>
-                            <option>ABC</option>
-                            <option>ABC</option>
-                            <option>ABC</option>
-                            <option>ABC</option>
-                            <option>ABC</option>
-                        </select>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Product Price</td>
-                    <td>
-                        <input input="number" name="proPrice" placeholder="Product Price" maxlength="5">
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Product Reorder Level</td>
-                    <td>
-                        <input input="number" name="proReOrder" placeholder="Product Reorder Level" maxlength="4">
+                        <input type="password" name="uPass" placeholder="Password" require>
                     </td>
                 </tr>
 
                 <tr>
                     <td></td>
                     <td colspan="2">
-                        <input type="submit" name="btnAddProduct" value="Insert Order">
+                        <input type="submit" name="btnLogin" value="Login">
                     </td>
                 </tr>
             </table>
